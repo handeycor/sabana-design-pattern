@@ -235,6 +235,7 @@ Esto reduce dependencias, simplifica el diseño y permite agregar o remover usua
 ```mermaid
 classDiagram
     class Mediator {
+        <<interface>>
         +registerUser(User user)
         +sendMessage(String message, User sender)
     }
@@ -254,6 +255,7 @@ classDiagram
 
     Mediator <|.. ChatRoom
     User --> Mediator
+
 
 ```
 
