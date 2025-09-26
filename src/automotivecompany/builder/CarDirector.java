@@ -9,7 +9,6 @@ public class CarDirector {
     }
 
     public void makeBasicCar(CustomizationCar customizationCar) {
-        //TODO: implementar pasos
         customizationCar.setEngine("Motor 1.8L, 4 cilindros");
         customizationCar.setColor("Black");
         customizationCar.setTires("H/T Highway Terrain");
@@ -17,7 +16,6 @@ public class CarDirector {
     };
 
     public void makeHighCustomCar(CustomizationCar customizationCar) {
-        //TODO: implementar pasos
         customizationCar.setEngine("V8 Biturbo de alto rendimiento.");
         customizationCar.setColor("Rojo carmesí.");
         customizationCar.setTires("Eagle F1 Asymmetric");
