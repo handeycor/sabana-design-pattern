@@ -4,6 +4,7 @@ Actividad 1: Diplomado universidad de La Sabana - Patrones  de diseño.
 # Integrantes
 Alexy Yesenia Rincón Capera
 Harver Andrey Cordero Duarte
+Juan Sebastian Joya Rodriguez
 Karen Ximena Orozco Gamboa
 
 ## Escenario 1: Sistema de Personalización Automotriz
@@ -110,3 +111,87 @@ classDiagram
     Car <.. CarBuilder : creates
     Client ..> Car : uses
 ```
+
+## Escenario 2: Sistema de Notificaciones Multiplataforma
+
+### Descripción del Escenario
+Desarrollo de una aplicación que gestiona la visualización de notificaciones en diferentes plataformas (escritorio, móvil, web). Las notificaciones pueden ser de distintos tipos (mensaje, alerta, advertencia, confirmación) y cada tipo puede mostrarse de distintas formas según la plataforma.
+
+### Problema Identificado
+Si se utiliza herencia tradicional, se tendría que crear clases como:
+- NotificacionMensajeWeb, NotificacionAlertaWeb
+- NotificacionMensajeMovil, NotificacionAlertaMovil
+- Esto lleva rápidamente a una explosión combinatoria de subclases difíciles de mantener.
+
+### Patrón de Diseño Aplicado: **ESTRUCTURAL - PATRÓN BRIDGE**
+
+### ¿Por qué un patrón Bridge ?
+
+**El Patrón Bridge es la solución ideal para este escenario ¿por qué?:**
+
+1. **Evita la explosión combinatoria**: En lugar de crear N×M clases (N tipos de notificación × M plataformas), el patrón Bridge separa las dos jerarquías (Abstracción e implementación), permitiendo que evolucionen de forma independiente.
+
+2. **Cumple con los beneficios esperados**:
+   - ✅ **Separación de responsabilidades**: La lógica de la notificación se separa del medio por el cual  se representa.
+   - ✅ **Escalabilidad**: Permite agregar  facilmente nuevas plataformas o tipos de  notificaciones sin modificar el resto del sistema.
+   - ✅ **Reducción de clases**: Evita la multiplicación de clases para cada combinaciones  posibles.
+   - ✅ **Flexibilidad en tiempo de ejecución**: Permite un cambio dinámico de plataforma, en c aso tal de ser requerido.
+
+3. **Características del patrón que coinciden con el problema**:
+   - **Dos dimensiones de variación**: Tipos de notificación y plataformas de presentación.
+   - **Independencia de evolución**: Ambas jerarquías pueden crecer sin afectar la otra.
+   - **Composición sobre herencia**: Usa delegación en lugar de herencia múltiple.
+
+### Implementación en el Proyecto
+- **Abstraction**: `NotificationService.java` - Define la interfaz de alto nivel para notificaciones.
+- **Refined Abstractions**: `Alert.java`, `Message.java` - Tipos específicos de notificación.
+- **Implementor**: `PlatformGateway.java` - Interface para las plataformas.
+- **Concrete Implementors**: `Mobil.java`, `Web.java` - Implementaciones específicas por plataforma.
+
+### Diagrama de Clases Escenario 2 (Patrón Bridge)
+
+```mermaid
+classDiagram
+    class NotificationClient {
+        + execute()
+    }
+    
+    class NotificationService {
+        <<abstract>>
+        # platformGateway PlatformGateway
+        + NotificationService(PlatformGateway)
+        + createNotification(String content)* String
+    }
+    
+    class Alert {
+        + Alert(PlatformGateway)
+        + createNotification(String content) String
+    }
+    
+    class Message {
+        + Message(PlatformGateway)
+        + createNotification(String content) String
+    }
+    
+    class PlatformGateway {
+        <<interface>>
+        + getNotifications(String content) String
+    }
+    
+    class Mobil {
+        + getNotifications(String content) String
+    }
+    
+    class Web {
+        + getNotifications(String content) String
+    }
+    
+    NotificationClient --> NotificationService : uses
+    NotificationService <|-- Alert : extends
+    NotificationService <|-- Message : extends
+    NotificationService --> PlatformGateway : bridge
+    PlatformGateway <|.. Mobil : implements
+    PlatformGateway <|.. Web : implements
+
+```
+
