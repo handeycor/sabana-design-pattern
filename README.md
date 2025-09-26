@@ -45,6 +45,7 @@ Crear un objeto Automóvil con múltiples configuraciones puede llevar a:
    - **Producto final inmutable**: Una vez construido, el objeto Car no se modifica.
 
 ### Implementación en el Proyecto
+- **Package**: `automotivecompany`
 - **Producto**: `Car.java` - El automóvil final
 - **Builder Interface**: `CustomizationCar.java` - Define los pasos requeridos de construcción de un objeto Car.
 - **Builder Concreto**: `CarBuilder.java` - Implementa la construcción paso a paso para el auto en cuestión.
@@ -143,6 +144,7 @@ Si se utiliza herencia tradicional, se tendría que crear clases como:
    - **Composición sobre herencia**: Usa delegación en lugar de herencia múltiple.
 
 ### Implementación en el Proyecto
+- **Package**: `notifications`
 - **Abstraction**: `NotificationService.java` - Define la interfaz de alto nivel para notificaciones.
 - **Refined Abstractions**: `Alert.java`, `Message.java` - Tipos específicos de notificación.
 - **Implementor**: `PlatformGateway.java` - Interface para las plataformas.
@@ -192,6 +194,64 @@ classDiagram
     NotificationService --> PlatformGateway : bridge
     PlatformGateway <|.. Mobil : implements
     PlatformGateway <|.. Web : implements
+
+```
+## Escenario 3: Sistema de Notificaciones Multiplataforma
+
+### Descripción del Escenario
+
+
+### Problema Identificado
+
+### Patrón de Diseño Aplicado: ****
+
+### ¿Por qué se escogio el Patrón de Diseño ?
+
+**El Patrón Bridge es la solución ideal para este escenario ¿por qué?:**
+
+1. **Evita la explosión combinatoria**: En lugar de crear N×M clases (N tipos de notificación × M plataformas), el patrón Bridge separa las dos jerarquías (Abstracción e implementación), permitiendo que evolucionen de forma independiente.
+
+2. **Cumple con los beneficios esperados**:
+    - ✅ **Separación de responsabilidades**: La lógica de la notificación se separa del medio por el cual  se representa.
+    - ✅ **Escalabilidad**: Permite agregar  facilmente nuevas plataformas o tipos de  notificaciones sin modificar el resto del sistema.
+    - ✅ **Reducción de clases**: Evita la multiplicación de clases para cada combinaciones  posibles.
+    - ✅ **Flexibilidad en tiempo de ejecución**: Permite un cambio dinámico de plataforma, en c aso tal de ser requerido.
+
+3. **Características del patrón que coinciden con el problema**:
+    - **Dos dimensiones de variación**: Tipos de notificación y plataformas de presentación.
+    - **Independencia de evolución**: Ambas jerarquías pueden crecer sin afectar la otra.
+    - **Composición sobre herencia**: Usa delegación en lugar de herencia múltiple.
+
+### Implementación en el Proyecto
+- **Abstraction**: `NotificationService.java` - Define la interfaz de alto nivel para notificaciones.
+- **Refined Abstractions**: `Alert.java`, `Message.java` - Tipos específicos de notificación.
+- **Implementor**: `PlatformGateway.java` - Interface para las plataformas.
+- **Concrete Implementors**: `Mobil.java`, `Web.java` - Implementaciones específicas por plataforma.
+
+### Diagrama de Clases Escenario 2 (Patrón Bridge)
+
+```mermaid
+classDiagram
+    class Mediator {
+        +registerUser(User user)
+        +sendMessage(String message, User sender)
+    }
+
+    class ChatRoom {
+        +registerUser(User user)
+        +sendMessage(String message, User sender)
+    }
+
+    class User {
+        -name: String
+        -mediator: Mediator
+        +User(String name, Mediator mediator)
+        +send(String message)
+        +receive(String message)
+    }
+
+    Mediator <|.. ChatRoom
+    User --> Mediator
 
 ```
 
