@@ -225,10 +225,10 @@ Así, los usuarios no interactúan directamente entre sí, sino a través de un 
 Esto reduce dependencias, simplifica el diseño y permite agregar o remover usuarios sin alterar la lógica de los demás.
 
 ### Implementación en el Proyecto
-- **Abstraction**: `NotificationService.java` - Define la interfaz de alto nivel para notificaciones.
-- **Refined Abstractions**: `Alert.java`, `Message.java` - Tipos específicos de notificación.
-- **Implementor**: `PlatformGateway.java` - Interface para las plataformas.
-- **Concrete Implementors**: `Mobil.java`, `Web.java` - Implementaciones específicas por plataforma.
+- **Interface**: `Mediator` - Define el contrato de las Salas de Chat.
+- **Concrete Implementor**: `ChatRoom` - Implementa la interfaz Mediator.
+- **Class**: `User` - Depende de la interfaz Mediator, pero no de ChatRoom; del cual recibe una instancia en tiempo de ejecución.
+
 
 ### Diagrama de Clases Escenario 3 (Patrón Mediator)
 
