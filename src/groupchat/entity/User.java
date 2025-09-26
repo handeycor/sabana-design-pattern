@@ -1,4 +1,6 @@
-package groupchat;
+package groupchat.entity;
+
+import groupchat.gateway.Mediator;
 
 public class User {
 

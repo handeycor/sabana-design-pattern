@@ -1,9 +1,12 @@
-package groupchat;
+package groupchat.domain;
+
+import groupchat.entity.User;
+import groupchat.gateway.Mediator;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatRoom implements Mediator{
+public class ChatRoom implements Mediator {
 
     private final List<User> users = new ArrayList<>();
 

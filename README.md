@@ -237,25 +237,40 @@ classDiagram
     class Mediator {
         <<interface>>
         +registerUser(User user)
-        +sendMessage(String message, User sender)
+        +sendMessage(String message, User sender, String roomName)
+        +createRoom(String roomName)
+        +joinRoom(String roomName, User user)
+        +leaveRoom(String roomName, User user)
     }
 
-    class ChatRoom {
+    class GroupChatRoom {
+        +name: String
+        +users: List~User~
+        +addUser(User user)
+        +removeUser(User user)
+        +broadcast(String message, User sender)
+    }
+
+    class GroupChatMediator {
+        -rooms: Map~String, GroupChatRoom~
         +registerUser(User user)
-        +sendMessage(String message, User sender)
+        +sendMessage(String message, User sender, String roomName)
+        +createRoom(String roomName)
+        +joinRoom(String roomName, User user)
+        +leaveRoom(String roomName, User user)
     }
 
     class User {
         -name: String
         -mediator: Mediator
         +User(String name, Mediator mediator)
-        +send(String message)
-        +receive(String message)
+        +send(String message, String roomName)
+        +receive(String message, String roomName)
     }
 
-    Mediator <|.. ChatRoom
-    User --> Mediator
-
-
+    Mediator <|.. GroupChatMediator
+    GroupChatMediator --> GroupChatRoom : manages
+    GroupChatRoom "1" o-- "*" User : contains
+    User --> Mediator : communicates
 ```
 
