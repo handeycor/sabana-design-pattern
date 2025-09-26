@@ -45,6 +45,7 @@ Crear un objeto Automóvil con múltiples configuraciones puede llevar a:
    - **Producto final inmutable**: Una vez construido, el objeto Car no se modifica.
 
 ### Implementación en el Proyecto
+- **Package**: `automotivecompany`
 - **Producto**: `Car.java` - El automóvil final
 - **Builder Interface**: `CustomizationCar.java` - Define los pasos requeridos de construcción de un objeto Car.
 - **Builder Concreto**: `CarBuilder.java` - Implementa la construcción paso a paso para el auto en cuestión.
@@ -143,6 +144,7 @@ Si se utiliza herencia tradicional, se tendría que crear clases como:
    - **Composición sobre herencia**: Usa delegación en lugar de herencia múltiple.
 
 ### Implementación en el Proyecto
+- **Package**: `notifications`
 - **Abstraction**: `NotificationService.java` - Define la interfaz de alto nivel para notificaciones.
 - **Refined Abstractions**: `Alert.java`, `Message.java` - Tipos específicos de notificación.
 - **Implementor**: `PlatformGateway.java` - Interface para las plataformas.
@@ -192,6 +194,68 @@ classDiagram
     NotificationService --> PlatformGateway : bridge
     PlatformGateway <|.. Mobil : implements
     PlatformGateway <|.. Web : implements
+
+```
+## Escenario 3: Chat Grupal
+
+### Descripción del Escenario
+
+Se está desarrollando una aplicación de chat grupal en la que varios usuarios pueden intercambiar mensajes dentro de una misma sala.
+
+### Problema Identificado
+
+Si cada usuario tuviera que enviar los mensajes directamente a todos los demás, se generaría un alto acoplamiento: 
+cada usuario debería conocer a todos los otros y mantener referencias a ellos, complicando el mantenimiento y la escalabilidad.
+
+### Patrón de Diseño Aplicado: **Mediator**
+
+### ¿Por qué se escogio el Patrón de Diseño?
+
+Para resolver el problema, se introduce un objeto central llamado “Sala de Chat” (ChatRoom) que actúa como mediador.
+
+El patrón Mediador permite los siguientes beneficios:
+
+- Cada Usuario solo mantiene una referencia a la sala de chat.
+
+- Cuando un usuario envía un mensaje, se lo pasa a la sala de chat.
+
+- La sala de chat se encarga de reenviar ese mensaje a todos los demás usuarios conectados.
+
+Así, los usuarios no interactúan directamente entre sí, sino a través de un mediador que gestiona toda la comunicación. 
+Esto reduce dependencias, simplifica el diseño y permite agregar o remover usuarios sin alterar la lógica de los demás.
+
+### Implementación en el Proyecto
+- **Interface**: `Mediator` - Define el contrato de las Salas de Chat.
+- **Concrete Implementor**: `ChatRoom` - Implementa la interfaz Mediator.
+- **Class**: `User` - Depende de la interfaz Mediator, pero no de ChatRoom; del cual recibe una instancia en tiempo de ejecución.
+
+
+### Diagrama de Clases Escenario 3 (Patrón Mediator)
+
+```mermaid
+classDiagram
+    class Mediator {
+        <<interface>>
+        +registerUser(User user)
+        +sendMessage(String message, User sender)
+    }
+
+    class ChatRoom {
+        +registerUser(User user)
+        +sendMessage(String message, User sender)
+    }
+
+    class User {
+        -name: String
+        -mediator: Mediator
+        +User(String name, Mediator mediator)
+        +send(String message)
+        +receive(String message)
+    }
+
+    Mediator <|.. ChatRoom
+    User --> Mediator
+
 
 ```
 
