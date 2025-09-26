@@ -1,4 +1,6 @@
-package groupchat;
+package groupchat.gateway;
+
+import groupchat.entity.User;
 
 public interface Mediator {
     void registerUser(User user);
