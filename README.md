@@ -2,10 +2,10 @@
 Actividad 1: Diplomado universidad de La Sabana - Patrones  de diseño.
 
 # Integrantes
-Alexy Yesenia Rincón Capera
-Harver Andrey Cordero Duarte
-Juan Sebastian Joya Rodriguez
-Karen Ximena Orozco Gamboa
+- Alexy Yesenia Rincón Capera
+- Harver Andrey Cordero Duarte
+- Juan Sebastian Joya Rodriguez
+- Karen Ximena Orozco Gamboa
 
 ## Escenario 1: Sistema de Personalización Automotriz
 
