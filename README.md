@@ -196,31 +196,33 @@ classDiagram
     PlatformGateway <|.. Web : implements
 
 ```
-## Escenario 3: Sistema de Notificaciones Multiplataforma
+## Escenario 3: Chat Grupal
 
 ### Descripción del Escenario
 
+Se está desarrollando una aplicación de chat grupal en la que varios usuarios pueden intercambiar mensajes dentro de una misma sala.
 
 ### Problema Identificado
 
-### Patrón de Diseño Aplicado: ****
+Si cada usuario tuviera que enviar los mensajes directamente a todos los demás, se generaría un alto acoplamiento: 
+cada usuario debería conocer a todos los otros y mantener referencias a ellos, complicando el mantenimiento y la escalabilidad.
 
-### ¿Por qué se escogio el Patrón de Diseño ?
+### Patrón de Diseño Aplicado: **Mediator**
 
-**El Patrón Bridge es la solución ideal para este escenario ¿por qué?:**
+### ¿Por qué se escogio el Patrón de Diseño?
 
-1. **Evita la explosión combinatoria**: En lugar de crear N×M clases (N tipos de notificación × M plataformas), el patrón Bridge separa las dos jerarquías (Abstracción e implementación), permitiendo que evolucionen de forma independiente.
+Para resolver el problema, se introduce un objeto central llamado “Sala de Chat” (ChatRoom) que actúa como mediador.
 
-2. **Cumple con los beneficios esperados**:
-    - ✅ **Separación de responsabilidades**: La lógica de la notificación se separa del medio por el cual  se representa.
-    - ✅ **Escalabilidad**: Permite agregar  facilmente nuevas plataformas o tipos de  notificaciones sin modificar el resto del sistema.
-    - ✅ **Reducción de clases**: Evita la multiplicación de clases para cada combinaciones  posibles.
-    - ✅ **Flexibilidad en tiempo de ejecución**: Permite un cambio dinámico de plataforma, en c aso tal de ser requerido.
+El patrón Mediador permite los siguientes beneficios:
 
-3. **Características del patrón que coinciden con el problema**:
-    - **Dos dimensiones de variación**: Tipos de notificación y plataformas de presentación.
-    - **Independencia de evolución**: Ambas jerarquías pueden crecer sin afectar la otra.
-    - **Composición sobre herencia**: Usa delegación en lugar de herencia múltiple.
+- Cada Usuario solo mantiene una referencia a la sala de chat.
+
+- Cuando un usuario envía un mensaje, se lo pasa a la sala de chat.
+
+- La sala de chat se encarga de reenviar ese mensaje a todos los demás usuarios conectados.
+
+Así, los usuarios no interactúan directamente entre sí, sino a través de un mediador que gestiona toda la comunicación. 
+Esto reduce dependencias, simplifica el diseño y permite agregar o remover usuarios sin alterar la lógica de los demás.
 
 ### Implementación en el Proyecto
 - **Abstraction**: `NotificationService.java` - Define la interfaz de alto nivel para notificaciones.
@@ -228,7 +230,7 @@ classDiagram
 - **Implementor**: `PlatformGateway.java` - Interface para las plataformas.
 - **Concrete Implementors**: `Mobil.java`, `Web.java` - Implementaciones específicas por plataforma.
 
-### Diagrama de Clases Escenario 2 (Patrón Bridge)
+### Diagrama de Clases Escenario 3 (Patrón Mediator)
 
 ```mermaid
 classDiagram
